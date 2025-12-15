@@ -1,0 +1,47 @@
+data:
+  dataset: file_path
+  file_path: './data/fandisk/input/fandisk.ply'
+  gt_path: './data/fandisk/gt/fandisk.obj'
+  non_manifold_sampling: gaussian
+  sample_type: grid
+  n_points: 20000
+  n_samples: 10000
+  eval_res: 256
+  sapmling_std: 0.005
+  grid_range: 1.1
+  shuffle: true
+
+model:
+  init_type: siren
+  nl: sine
+  decoder_hidden_dim: 256
+  decoder_n_hidden_layers: 4
+  latent_size: 0
+  sphere_init_params: [1.6, 0.1]
+
+loss:
+  name: neur_cad_recon
+  type: siren_wo_n_w_morse
+  div_type: l1
+  div_decay: linear
+  decay_params: [10, 0.2, 10, 0.5, 0.001, 0]
+  weights: [7000.0, 600.0, 100.0, 50.0, 0, 10]
+  bidirectional_morse: false
+  morse_near: true
+  use_iters: false
+  udf: false
+  use_DT: false
+
+exp:
+  log_dir: logs/neur_cad_recon/default
+  seed: 42
+  num_epochs: 1
+  batch_size: 1
+  lr: 5.0e-5
+  grad_clip_norm: 10.0
+  weight_decay: 0.0
+  improvement_patience: 3
+  eval_frequency: 500
+  chunk_size: 5000
+  early_stop: false
+  output_any: false
